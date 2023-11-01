@@ -7,22 +7,22 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.models.Document;
 import com.example.demo.services.DocumentService;
 
+import lombok.RequiredArgsConstructor;
+
 @Controller
+@RequiredArgsConstructor
 public class DocumentsController{
 
     private final DocumentService documentService;
 
-    public DocumentsController(DocumentService documentService){
-        this.documentService = documentService;
-    }
-    
     @GetMapping("/")
-    public String documents(Model model){
-        model.addAttribute("documents", documentService.GetDocuments());
+    public String documents(@RequestParam(name = "document_number", required = false) String document_number, Model model){
+        model.addAttribute("documents", documentService.GetDocuments(document_number));
         return "documents";
     }
 
