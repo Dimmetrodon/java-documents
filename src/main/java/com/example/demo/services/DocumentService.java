@@ -18,7 +18,7 @@ public class DocumentService {
         documents.add(new Document(++ID, "2", LocalDate.now(), 2, "document2"));
     }
 
-    public List<Document> listDocuments(){ return documents; }
+    public List<Document> GetDocuments(){ return documents; }
 
     public void saveDocument(Document document){
         document.setId(++ID);
@@ -27,5 +27,12 @@ public class DocumentService {
 
     public void deleteDocument(long id){
         documents.removeIf(document -> document.getId().equals(id));
+    }
+
+    public Document getDocumentById(long id){
+        for (Document document : documents){
+            if (document.getId().equals(id)) return document;
+        }
+         return null;
     }
 }

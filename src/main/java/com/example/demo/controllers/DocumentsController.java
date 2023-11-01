@@ -3,7 +3,10 @@ package com.example.demo.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import com.example.demo.models.Document;
 import com.example.demo.services.DocumentService;
 
 @Controller
@@ -17,7 +20,25 @@ public class DocumentsController{
     
     @GetMapping("/")
     public String documents(Model model){
-        model.addAttribute("documents", documentService.listDocuments());
+        model.addAttribute("documents", documentService.GetDocuments());
         return "documents";
+    }
+
+    @GetMapping("/document/{id}")
+    public String documentInfo(@PathVariable Long id, Model model){
+        model.addAttribute("document", documentService.getDocumentById(id));
+        return "document-info";
+    }
+
+    @PostMapping("/document/create")
+    public String createDocument(Document document){
+        documentService.saveDocument(document);
+        return "redirect:/";
+    }
+
+    @PostMapping("/document/delete/{id}")
+    public String deleteDocument(@PathVariable Long id){
+        documentService.deleteDocument(id);
+        return "redirect:/";
     }
 }

@@ -8,7 +8,7 @@
 <h4>Документы</h4>
 <#list documents as document>
     <div>
-        <p><b>${document.document_number}</b> ${document.sum}</p> | <a href="/document/${document.id}">Подробнее...</a></p>
+        <p><b>${document.document_number}</b> ${document.sum} ${document.date} ${document.note}</p> | <a href="/document/${document.id}">Подробнее...</a></p>
     </div>
 </#list>
 <hr>
@@ -16,8 +16,9 @@
 <form action ="/document/create" method="post">
     Номер: <input type="text" name="document_number">
     Дата создания: <input type="text" name="date">
-    Сумма: <input type="int" name="sum">
-    Примечание: <input type="int" name="note">
+    Сумма: <input type="number" name="sum">
+    Примечание: <input type="text" name="note">
+    <input type="submit" value="Добавить документ"/>
 </form>
 </body>
 </html>
