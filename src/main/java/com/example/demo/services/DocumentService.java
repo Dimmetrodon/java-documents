@@ -14,8 +14,8 @@ public class DocumentService {
     private long ID = 0;
 
     {
-        documents.add(new Document(++ID, "1", LocalDate.now(), 1, "документ"));
-        documents.add(new Document(++ID, "2", LocalDate.now(), 2, "документ2"));
+        documents.add(new Document(++ID, "1", LocalDate.now(), 1, "document"));
+        documents.add(new Document(++ID, "2", LocalDate.now(), 2, "document2"));
     }
 
     public List<Document> listDocuments(){ return documents; }

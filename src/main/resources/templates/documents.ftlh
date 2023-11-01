@@ -14,6 +14,10 @@
 <hr>
 <h3>Создать новый документ</h3>
 <form action ="/document/create" method="post">
-    Название документа: <input type="int" name="document_number">
+    Номер: <input type="text" name="document_number">
+    Дата создания: <input type="text" name="date">
+    Сумма: <input type="int" name="sum">
+    Примечание: <input type="int" name="note">
+</form>
 </body>
 </html>
