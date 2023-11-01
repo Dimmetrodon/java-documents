@@ -1,5 +1,7 @@
 package com.example.demo.controllers;
 
+import java.time.LocalDate;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,5 +42,11 @@ public class DocumentsController{
     public String deleteDocument(@PathVariable Long id){
         documentService.deleteDocument(id);
         return "redirect:/";
+    }
+
+    @PostMapping("/document/update/{id}")
+    public String updateDocument(@PathVariable long id, String document_number, LocalDate date, int sum, String note){
+        documentService.updateDocument(id, document_number, date, sum, note);
+        return "redirect:/document/{id}";
     }
 }

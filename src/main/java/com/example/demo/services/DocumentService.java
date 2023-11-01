@@ -35,4 +35,18 @@ public class DocumentService {
         }
          return null;
     }
+
+    public void updateDocument(long id, String document_number, LocalDate date, int sum, String note){
+        for (Document document : documents){
+            if (document.getId().equals(id) && document_number != null && date != null && note != null){
+                document.setDocument_number(document_number);
+                document.setDate(date);
+                document.setSum(sum);
+                document.setNote(note);
+                return;
+            }else{
+                System.out.println("incorrect form filling");
+            }
+        }
+    }
 }
