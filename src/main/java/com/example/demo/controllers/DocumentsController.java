@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.models.Document;
-import com.example.demo.models.Position;
 import com.example.demo.services.DocumentService;
 
 import lombok.RequiredArgsConstructor;
@@ -51,22 +50,4 @@ public class DocumentsController{
         documentService.updateDocument(id, document_number, date, note);
         return "redirect:/document/{id}";
     }
-
-    // @PostMapping("/document/addposition/{id}")
-    // public String addPositionToDocument(@PathVariable long id, Position position){
-    //     documentService.addPositionToDocument(id, position);
-    //     return "redirect:/document/{id}";
-    // }
-
-    // @PostMapping("document/updateposition/{id}")
-    // public String updatePosition(@PathVariable long id, Position position){
-    //     documentService.updatePosition(id, position);
-    //     return "redirect:/document/{id}";
-    // }
-
-    // @PostMapping("document/deleteposition/{id}")
-    // public String deletePosition(@PathVariable long id, Long position_id){
-    //     documentService.deletePosition(id, position_id);
-    //     return "redirect:/document/{id}";
-    // }
 }

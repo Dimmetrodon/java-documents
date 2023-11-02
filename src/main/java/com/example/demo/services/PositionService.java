@@ -1,7 +1,6 @@
 package com.example.demo.services;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.example.demo.models.Document;
 import com.example.demo.models.Position;
@@ -25,6 +24,7 @@ public class PositionService {
                 positionRepository.save(position);
                 document.AddPosition(position);
                 documentRepository.save(document);
+                log.info("created position {} for document {}", position.getId(), document_id);
             }
         }
 
@@ -43,6 +43,7 @@ public class PositionService {
                 positionRepository.save(position);
                 document.UpdateDocumentSum();
                 documentRepository.save(document);
+                log.info("Position {} updated", position_id);
             }
         }
 
@@ -52,5 +53,6 @@ public class PositionService {
             positionRepository.deleteById(position_id);
             document.UpdateDocumentSum();
             documentRepository.save(document);
+            log.info("Position {} deleted", position_id);
         }
 }

@@ -7,11 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.models.Document;
 import com.example.demo.models.DocumentCreationError;
-import com.example.demo.models.Position;
 
 import com.example.demo.repositories.DocumentRepository;
 import com.example.demo.repositories.ErrorRepository;
-import com.example.demo.repositories.PositionsRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,19 +19,20 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DocumentService {
     private final DocumentRepository documentRepository;
-    private final PositionsRepository positionRepository;
     private final ErrorRepository errorRepository;
 
     public List<Document> GetDocuments(String document_number){
+        log.info("Listing documents");
         if (document_number != null && !document_number.equals(""))  return documentRepository.findBydocument_number(document_number);
         return documentRepository.findAll();
      }
 
     public void saveDocument(Document document){
         if (!documentRepository.findBydocument_number(document.getDocument_number()).isEmpty()){
+            log.info("Document creation error occured");
             DocumentCreationError(document.getDocument_number());
         }else{
-            log.info("Saving new {}", document);
+            log.info("Saving new document: {}", document);
             documentRepository.save(document);
         }
     }
@@ -67,39 +66,6 @@ public class DocumentService {
             log.error("Input arguments: \nid = {}\ndocument_number = {}\ndate = {}\nnote =", id, document_number, date, note);
         }
     }
-
-    // public void addPositionToDocument(long id, Position position){
-    //     Document document = documentRepository.findById(id).orElse(null);
-    //     if (document != null){
-    //         document.addPositionToDocument(position);
-    //         documentRepository.save(document);
-    //     }
-    // }
-
-    // public void updatePosition(long id, Position position_updated){
-    //     Document document = documentRepository.findById(id).orElse(null);
-    //     System.out.println(document.getPositions());
-    //     if (document != null){
-    //         for (Position position : document.getPositions()){
-    //             if (position.getId() == position_updated.getId()){
-    //                 position.setName(position_updated.getName());
-    //                 position.setPosition_number(position_updated.getPosition_number());
-    //                 position.setSum(position_updated.getSum());
-
-    //                 positionRepository.save(position);
-    //                 document.UpdateDocumentSum();
-    //                 documentRepository.save(document);
-    //             }
-    //         }
-    //     }
-    // }
-
-    // public void deletePosition(long id, long position_id){
-    //     Document document = documentRepository.findById(id).orElse(null);
-    //     positionRepository.deleteById(position_id);
-    //     document.UpdateDocumentSum();
-    //     documentRepository.save(document);
-    // }
 
     public void DocumentCreationError(String document_number){
         DocumentCreationError document_error = new DocumentCreationError();
