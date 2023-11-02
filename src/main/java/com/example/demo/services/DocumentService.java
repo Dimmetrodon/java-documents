@@ -7,9 +7,11 @@ import org.springframework.boot.origin.SystemEnvironmentOrigin;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.models.Document;
+import com.example.demo.models.DocumentCreationError;
 import com.example.demo.models.Position;
 
 import com.example.demo.repositories.DocumentRepository;
+import com.example.demo.repositories.ErrorRepository;
 import com.example.demo.repositories.PositionsRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 public class DocumentService {
     private final DocumentRepository documentRepository;
     private final PositionsRepository positionRepository;
+    private final ErrorRepository errorRepository;
 
     public List<Document> GetDocuments(String document_number){
         if (document_number != null && !document_number.equals(""))  return documentRepository.findBydocument_number(document_number);
@@ -28,8 +31,12 @@ public class DocumentService {
      }
 
     public void saveDocument(Document document){
-        log.info("Saving new {}", document);
-        documentRepository.save(document);
+        if (documentRepository.findBydocument_number(document.getDocument_number()) != null){
+            DocumentCreationError(document.getDocument_number());
+        }else{
+            log.info("Saving new {}", document);
+            documentRepository.save(document);
+        }
     }
 
     public void deleteDocument(long id){
@@ -92,5 +99,12 @@ public class DocumentService {
         positionRepository.deleteById(position_id);
         document.UpdateDocumentSum();
         documentRepository.save(document);
+    }
+
+    public void DocumentCreationError(String document_number){
+        DocumentCreationError document_error = new DocumentCreationError();
+        document_error.setName("Ошибка при создании документа");
+        document_error.setNote("Повторяющийся номер документа: " + document_number);
+        errorRepository.save(document_error);
     }
 }
