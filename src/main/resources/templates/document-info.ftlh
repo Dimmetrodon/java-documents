@@ -43,15 +43,13 @@
             <p><b>Номер позиции: ${position.position_number}</b></p>
             <p>Название: ${position.name}</p>
             <p>Сумма: ${position.sum}</p>
-            <form action="/document/updateposition/${document.id}" method="post">
-                <input type="hidden" name="id" value="${position.id}">
-                Номер позиции: <input type="text" name="position_number">
-                Название: <input type="text" name="name">
-                Сумма: <input type="number" name="sum">
-            <input type="submit" value="Изменить позицию"/>
+            <form action="/document/${document.id}/updateposition/${position.id}" method="post">
+                Номер позиции: <input type="text" name="position_number" value="${position.position_number}">
+                Название: <input type="text" name="name" value="${position.name}">
+                Сумма: <input type="text" name="sum" value="${position.sum}">
+                <input type="submit" value="Изменить позицию"/>
             </form>
-            <form action="/document/deleteposition/${document.id}" method="post">
-                <input type="hidden" name="position_id" value="${position.id}">
+            <form action="/document/${document.id}/deleteposition/${position.id}" method="post">
                 <input type="submit" value="Удалить позицию"/>
             </form>
         </div>
@@ -60,7 +58,7 @@
         <h3>Позиций нет</h3>
     </#if>
 </div>
-<form action="/document/addposition/${document.id}" method="post">
+<form action="/document/${document.id}/createposition" method="post">
     Номер позиции: <input type="text" name="position_number">
     Название: <input type="text" name="name">
     Сумма: <input type="text" name="sum">

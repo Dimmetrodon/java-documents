@@ -11,7 +11,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -40,10 +39,9 @@ public class Document{
     private List<Position> positions = new ArrayList<>();
     private Long previewPositionId;
 
-    public void addPositionToDocument(Position position){
-        position.setDocument(this);
+    public void AddPosition(Position position){
         positions.add(position);
-        UpdateDocumentSum();
+        this.UpdateDocumentSum();
     }
 
     public void UpdateDocumentSum(){

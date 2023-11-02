@@ -52,21 +52,21 @@ public class DocumentsController{
         return "redirect:/document/{id}";
     }
 
-    @PostMapping("/document/addposition/{id}")
-    public String addPositionToDocument(@PathVariable long id, Position position){
-        documentService.addPositionToDocument(id, position);
-        return "redirect:/document/{id}";
-    }
+    // @PostMapping("/document/addposition/{id}")
+    // public String addPositionToDocument(@PathVariable long id, Position position){
+    //     documentService.addPositionToDocument(id, position);
+    //     return "redirect:/document/{id}";
+    // }
 
-    @PostMapping("document/updateposition/{id}")
-    public String updatePosition(@PathVariable long id, Position position){
-        documentService.updatePosition(id, position);
-        return "redirect:/document/{id}";
-    }
+    // @PostMapping("document/updateposition/{id}")
+    // public String updatePosition(@PathVariable long id, Position position){
+    //     documentService.updatePosition(id, position);
+    //     return "redirect:/document/{id}";
+    // }
 
-    @PostMapping("document/deleteposition/{id}")
-    public String deletePosition(@PathVariable long id, Long position_id){
-        documentService.deletePosition(id, position_id);
-        return "redirect:/document/{id}";
-    }
+    // @PostMapping("document/deleteposition/{id}")
+    // public String deletePosition(@PathVariable long id, Long position_id){
+    //     documentService.deletePosition(id, position_id);
+    //     return "redirect:/document/{id}";
+    // }
 }

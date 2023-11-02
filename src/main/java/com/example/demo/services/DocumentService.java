@@ -3,7 +3,6 @@ package com.example.demo.services;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.boot.origin.SystemEnvironmentOrigin;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.models.Document;
@@ -31,7 +30,7 @@ public class DocumentService {
      }
 
     public void saveDocument(Document document){
-        if (documentRepository.findBydocument_number(document.getDocument_number()) != null){
+        if (!documentRepository.findBydocument_number(document.getDocument_number()).isEmpty()){
             DocumentCreationError(document.getDocument_number());
         }else{
             log.info("Saving new {}", document);
@@ -69,37 +68,38 @@ public class DocumentService {
         }
     }
 
-    public void addPositionToDocument(long id, Position position){
-        Document document = documentRepository.findById(id).orElse(null);
-        if (document != null){
-            document.addPositionToDocument(position);
-            documentRepository.save(document);
-        }
-    }
+    // public void addPositionToDocument(long id, Position position){
+    //     Document document = documentRepository.findById(id).orElse(null);
+    //     if (document != null){
+    //         document.addPositionToDocument(position);
+    //         documentRepository.save(document);
+    //     }
+    // }
 
-    public void updatePosition(long id, Position position_updated){
-        Document document = documentRepository.findById(id).orElse(null);
-        if (document != null){
-            for (Position position : document.getPositions()){
-                if (position.getId() == position_updated.getId()){
-                    position.setName(position_updated.getName());
-                    position.setPosition_number(position_updated.getPosition_number());
-                    position.setSum(position_updated.getSum());
+    // public void updatePosition(long id, Position position_updated){
+    //     Document document = documentRepository.findById(id).orElse(null);
+    //     System.out.println(document.getPositions());
+    //     if (document != null){
+    //         for (Position position : document.getPositions()){
+    //             if (position.getId() == position_updated.getId()){
+    //                 position.setName(position_updated.getName());
+    //                 position.setPosition_number(position_updated.getPosition_number());
+    //                 position.setSum(position_updated.getSum());
 
-                    positionRepository.save(position);
-                    document.UpdateDocumentSum();
-                    documentRepository.save(document);
-                }
-            }
-        }
-    }
+    //                 positionRepository.save(position);
+    //                 document.UpdateDocumentSum();
+    //                 documentRepository.save(document);
+    //             }
+    //         }
+    //     }
+    // }
 
-    public void deletePosition(long id, long position_id){
-        Document document = documentRepository.findById(id).orElse(null);
-        positionRepository.deleteById(position_id);
-        document.UpdateDocumentSum();
-        documentRepository.save(document);
-    }
+    // public void deletePosition(long id, long position_id){
+    //     Document document = documentRepository.findById(id).orElse(null);
+    //     positionRepository.deleteById(position_id);
+    //     document.UpdateDocumentSum();
+    //     documentRepository.save(document);
+    // }
 
     public void DocumentCreationError(String document_number){
         DocumentCreationError document_error = new DocumentCreationError();
