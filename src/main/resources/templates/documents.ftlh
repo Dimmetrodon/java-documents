@@ -22,7 +22,6 @@
 <form action ="/document/create" method="post">
     Номер: <input type="text" name="document_number">
     Дата создания: <input type="text" name="date">
-    Сумма: <input type="number" name="sum">
     Примечание: <input type="text" name="note">
     <input type="submit" value="Добавить документ"/>
 </form>

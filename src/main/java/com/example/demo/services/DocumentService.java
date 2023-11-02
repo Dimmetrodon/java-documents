@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.models.Document;
+import com.example.demo.models.Position;
+
 import com.example.demo.repositories.DocumentRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -18,7 +20,7 @@ public class DocumentService {
     private final DocumentRepository documentRepository;
 
     public List<Document> GetDocuments(String document_number){ 
-        if (document_number != null)  return documentRepository.findBydocument_number (document_number);
+        if (document_number != null)  return documentRepository.findBydocument_number(document_number);
         return documentRepository.findAll();
      }
 
@@ -36,7 +38,7 @@ public class DocumentService {
         return documentRepository.findById(id).orElse(null);
     }
 
-    public void updateDocument(long id, String document_number, LocalDate date, int sum, String note){
+    public void updateDocument(long id, String document_number, LocalDate date, String note){
         Document document = documentRepository.findById(id).orElse(null);
         if (document != null){
             if (document_number != null){
@@ -44,9 +46,6 @@ public class DocumentService {
             }
             if (date != null){
                 document.setDate(date);
-            }
-            if (sum != 0){
-                document.setSum(sum);
             }
             if (note != null){
                 document.setNote(note);
@@ -56,7 +55,15 @@ public class DocumentService {
             log.info("Document {} updated", id);
         }else{
             log.error("Update document {} error", id);
-            log.error("Input arguments: \nid = {}\ndocument_number = {}\ndate = {}\nsum = {}\nnote =", id, document_number, date, sum, note);
+            log.error("Input arguments: \nid = {}\ndocument_number = {}\ndate = {}\nnote =", id, document_number, date, note);
+        }
+    }
+
+    public void addPositionToDocument(long id, Position position){
+        Document document = documentRepository.findById(id).orElse(null);
+        if (document != null){
+            document.addPositionToDocument(position);
+            documentRepository.save(document);
         }
     }
 }

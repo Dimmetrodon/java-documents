@@ -1,12 +1,18 @@
 package com.example.demo.models;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.ArrayList;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,9 +24,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class Document{
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id")
     private Long id;
     @Column(name = "document_number")
@@ -31,52 +36,22 @@ public class Document{
     private int sum;
     @Column(name = "note", columnDefinition = "text")
     private String note;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "document")
+    private List<Position> positions = new ArrayList<>();
+    private Long previewPositionId;
 
+    public void addPositionToDocument(Position position){
+        position.setDocument(this);
+        positions.add(position);
+        UpdateDocumentSum();
+    }
+
+    public void UpdateDocumentSum(){
+        int sum = 0;
+        for (Position position : this.getPositions()){
+            sum += position.getSum();
+        }
+        this.setSum(sum);
+    }
 }
-
-// public class Document {
-//     private Long id;
-//     private String document_number;
-//     private LocalDate date;
-//     private int sum;
-//     private String note;
-
-//     public Document(Long id, String document_number, LocalDate date, int sum, String note) {
-//         this.id = id;
-//         this.document_number = document_number;
-//         this.date = date;
-//         this.sum = sum;
-//         this.note = note;
-//     }
-//     public Long getId() {
-//         return id;
-//     }
-//     public void setId(Long id) {
-//         this.id = id;
-//     }
-//     public String getdocument_number() {
-//         return document_number;
-//     }
-//     public void setdocument_number(String document_number) {
-//         this.document_number = document_number;
-//     }
-//     public LocalDate getDate() {
-//         return date;
-//     }
-//     public void setDate(LocalDate date) {
-//         this.date = date;
-//     }
-//     public int getSum() {
-//         return sum;
-//     }
-//     public void setSum(int sum) {
-//         this.sum = sum;
-//     }
-//     public String getNote() {
-//         return note;
-//     }
-//     public void setNote(String note) {
-//         this.note = note;
-//     }
-// }
 
