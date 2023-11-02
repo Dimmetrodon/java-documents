@@ -51,7 +51,7 @@
             <input type="submit" value="Изменить позицию"/>
             </form>
             <form action="/document/deleteposition/${document.id}" method="post">
-                <input type="hidden" name="id" value="${position.id}">
+                <input type="hidden" name="position_id" value="${position.id}">
                 <input type="submit" value="Удалить позицию"/>
             </form>
         </div>

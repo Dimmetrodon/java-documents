@@ -88,7 +88,6 @@ public class DocumentService {
     }
 
     public void deletePosition(long id, long position_id){
-        System.out.println("service");
         Document document = documentRepository.findById(id).orElse(null);
         positionRepository.deleteById(position_id);
         document.UpdateDocumentSum();

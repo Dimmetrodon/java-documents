@@ -65,8 +65,7 @@ public class DocumentsController{
     }
 
     @PostMapping("document/deleteposition/{id}")
-    public String deletePosition(@PathVariable long id, long position_id){
-        System.out.println(position_id);
+    public String deletePosition(@PathVariable long id, Long position_id){
         documentService.deletePosition(id, position_id);
         return "redirect:/document/{id}";
     }
