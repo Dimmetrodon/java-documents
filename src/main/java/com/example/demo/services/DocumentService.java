@@ -3,12 +3,14 @@ package com.example.demo.services;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.boot.origin.SystemEnvironmentOrigin;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.models.Document;
 import com.example.demo.models.Position;
 
 import com.example.demo.repositories.DocumentRepository;
+import com.example.demo.repositories.PositionsRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,9 +20,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DocumentService {
     private final DocumentRepository documentRepository;
+    private final PositionsRepository positionRepository;
 
-    public List<Document> GetDocuments(String document_number){ 
-        if (document_number != null)  return documentRepository.findBydocument_number(document_number);
+    public List<Document> GetDocuments(String document_number){
+        if (document_number != null && !document_number.equals(""))  return documentRepository.findBydocument_number(document_number);
         return documentRepository.findAll();
      }
 
@@ -65,5 +68,30 @@ public class DocumentService {
             document.addPositionToDocument(position);
             documentRepository.save(document);
         }
+    }
+
+    public void updatePosition(long id, Position position_updated){
+        Document document = documentRepository.findById(id).orElse(null);
+        if (document != null){
+            for (Position position : document.getPositions()){
+                if (position.getId() == position_updated.getId()){
+                    position.setName(position_updated.getName());
+                    position.setPosition_number(position_updated.getPosition_number());
+                    position.setSum(position_updated.getSum());
+
+                    positionRepository.save(position);
+                    document.UpdateDocumentSum();
+                    documentRepository.save(document);
+                }
+            }
+        }
+    }
+
+    public void deletePosition(long id, long position_id){
+        System.out.println("service");
+        Document document = documentRepository.findById(id).orElse(null);
+        positionRepository.deleteById(position_id);
+        document.UpdateDocumentSum();
+        documentRepository.save(document);
     }
 }

@@ -23,6 +23,7 @@ public class DocumentsController{
 
     @GetMapping("/")
     public String documents(@RequestParam(name = "document_number", required = false) String document_number, Model model){
+        System.out.println("got:" + document_number + ".");
         model.addAttribute("documents", documentService.GetDocuments(document_number));
         return "documents";
     }
@@ -54,6 +55,19 @@ public class DocumentsController{
     @PostMapping("/document/addposition/{id}")
     public String addPositionToDocument(@PathVariable long id, Position position){
         documentService.addPositionToDocument(id, position);
+        return "redirect:/document/{id}";
+    }
+
+    @PostMapping("document/updateposition/{id}")
+    public String updatePosition(@PathVariable long id, Position position){
+        documentService.updatePosition(id, position);
+        return "redirect:/document/{id}";
+    }
+
+    @PostMapping("document/deleteposition/{id}")
+    public String deletePosition(@PathVariable long id, long position_id){
+        System.out.println(position_id);
+        documentService.deletePosition(id, position_id);
         return "redirect:/document/{id}";
     }
 }
