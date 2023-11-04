@@ -1,12 +1,16 @@
 package com.example.demo.controllers;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.models.Document;
@@ -21,33 +25,28 @@ public class DocumentsController{
     private final DocumentService documentService;
 
     @GetMapping("/")
-    public String documents(@RequestParam(name = "document_number", required = false) String document_number, Model model){
-        System.out.println("got:" + document_number + ".");
-        model.addAttribute("documents", documentService.GetDocuments(document_number));
-        return "documents";
+    public ResponseEntity<?> documents(@RequestParam(name = "document_number", required = false) String document_number) {
+        return ResponseEntity.ok(documentService.GetDocuments(document_number));
     }
 
     @GetMapping("/document/{id}")
-    public String documentInfo(@PathVariable Long id, Model model){
-        model.addAttribute("document", documentService.getDocumentById(id));
-        return "document-info";
+    public ResponseEntity<?> documentInfo(@PathVariable Long id){
+        return documentService.getDocumentById(id);
     }
 
     @PostMapping("/document/create")
-    public String createDocument(Document document){
-        documentService.saveDocument(document);
-        return "redirect:/";
+    public ResponseEntity<?> createDocument(@RequestBody Document document){
+        return documentService.saveDocument(document);
     }
 
     @PostMapping("/document/delete/{id}")
-    public String deleteDocument(@PathVariable Long id){
+    public ResponseEntity<?> deleteDocument(@PathVariable Long id){
         documentService.deleteDocument(id);
-        return "redirect:/";
+        return ResponseEntity.ok("Successful deletion");
     }
 
     @PostMapping("/document/update/{id}")
-    public String updateDocument(@PathVariable long id, String document_number, LocalDate date, String note){
-        documentService.updateDocument(id, document_number, date, note);
-        return "redirect:/document/{id}";
+    public ResponseEntity<?> updateDocument(@PathVariable long id, @RequestBody Document document){
+        return documentService.updateDocument(id, document);
     }
 }

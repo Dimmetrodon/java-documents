@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.models.Document;
@@ -7,6 +8,7 @@ import com.example.demo.models.Position;
 import com.example.demo.repositories.DocumentRepository;
 import com.example.demo.repositories.PositionsRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,42 +19,62 @@ public class PositionService {
         private final DocumentRepository documentRepository;
         private final PositionsRepository positionRepository;
 
-        public void createPosition(Long document_id, Position position){
+        @Transactional
+        public ResponseEntity<?> createPosition(Long document_id, Position new_position){
             Document document = documentRepository.findById(document_id).orElse(null);
+            
             if (document != null) {
+                Position position = new Position();
+                position.setName(new_position.getName());
+                position.setPosition_number(new_position.getPosition_number());
+                position.setSum(new_position.getSum());
                 position.setDocument(document);
-                positionRepository.save(position);
+
+                position = positionRepository.save(position);
+
                 document.AddPosition(position);
+                // document.getPositions().add(position);
                 documentRepository.save(document);
+
                 log.info("created position {} for document {}", position.getId(), document_id);
+                return ResponseEntity.ok(String.format("Position %s created", position.getName()));
+            }else{
+                return ResponseEntity.badRequest().body("No such document.");
             }
         }
 
-        public void updatePosition(Long position_id, String position_number, String name, int sum){
+        public ResponseEntity<?> updatePosition(Long position_id, Position new_position){
             Position position = positionRepository.findById(position_id).get();
             Document document = position.getDocument();
+
             if (document != null){
-                if (name != null){
-                    position.setName(name);
+                if (new_position.getName() != null){
+                    position.setName(new_position.getName());
                 }
-                if (position_number != null){
-                    position.setPosition_number(position_number);
+                if (new_position.getPosition_number() != null){
+                    position.setPosition_number(new_position.getPosition_number());
                 }
-                position.setSum(sum);
+                position.setSum(new_position.getSum());
 
                 positionRepository.save(position);
                 document.UpdateDocumentSum();
                 documentRepository.save(document);
                 log.info("Position {} updated", position_id);
+                return ResponseEntity.ok("Position updated.");
+            } else{
+                return ResponseEntity.badRequest().body("No such position or document.");
             }
         }
 
-        public void deletePosition(Long position_id){
-            Position position = positionRepository.findById(position_id).get();
+        public ResponseEntity<?> deletePosition(Long position_id){
+            Position position = positionRepository.findById(position_id).orElse(null);
             Document document = position.getDocument();
-            positionRepository.deleteById(position_id);
+
+            document.getPositions().remove(position);
             document.UpdateDocumentSum();
-            documentRepository.save(document);
+            positionRepository.delete(position);
+
             log.info("Position {} deleted", position_id);
+            return ResponseEntity.ok("Position deleted");
         }
 }

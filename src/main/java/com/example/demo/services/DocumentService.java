@@ -3,6 +3,9 @@ package com.example.demo.services;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.models.Document;
@@ -27,13 +30,16 @@ public class DocumentService {
         return documentRepository.findAll();
      }
 
-    public void saveDocument(Document document){
-        if (!documentRepository.findBydocument_number(document.getDocument_number()).isEmpty()){
+    public ResponseEntity<?> saveDocument(Document document){
+        String document_number = document.getDocument_number();
+        if (!documentRepository.findBydocument_number(document_number).isEmpty()){
             log.info("Document creation error occured");
-            DocumentCreationError(document.getDocument_number());
+            DocumentCreationError(document_number);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Document with the same number already exists.");
         }else{
             log.info("Saving new document: {}", document);
             documentRepository.save(document);
+            return ResponseEntity.ok(document);
         }
     }
 
@@ -42,28 +48,35 @@ public class DocumentService {
         log.info("Document {} deleted", id);
     }
 
-    public Document getDocumentById(long id){
-        return documentRepository.findById(id).orElse(null);
-    }
-
-    public void updateDocument(long id, String document_number, LocalDate date, String note){
+    public ResponseEntity<?> getDocumentById(long id){
         Document document = documentRepository.findById(id).orElse(null);
         if (document != null){
-            if (document_number != null){
-                document.setDocument_number(document_number);
+            return ResponseEntity.ok(document);
+        }else{
+            return ResponseEntity.badRequest().body("No such document.");
+        }
+    }
+
+    public ResponseEntity<?> updateDocument(long id, Document updated_document){
+        Document document = documentRepository.findById(id).orElse(null);
+        if (document != null){
+            if (updated_document.getDocument_number() != null){
+                document.setDocument_number(updated_document.getDocument_number());
             }
-            if (date != null){
-                document.setDate(date);
+            if (updated_document.getDate() != null){
+                document.setDate(updated_document.getDate());
             }
-            if (note != null){
-                document.setNote(note);
+            if (updated_document.getNote() != null){
+                document.setNote(updated_document.getNote());
             }
 
             documentRepository.save(document);
             log.info("Document {} updated", id);
+            return ResponseEntity.ok("Successful update.");
         }else{
             log.error("Update document {} error", id);
-            log.error("Input arguments: \nid = {}\ndocument_number = {}\ndate = {}\nnote =", id, document_number, date, note);
+            log.error("Input arguments: \nid = {}\ndocument_number = {}\ndate = {}\nnote =", id, updated_document.getDocument_number(), updated_document.getDate(), updated_document.getNote());
+            return ResponseEntity.badRequest().body("No such document.");
         }
     }
 

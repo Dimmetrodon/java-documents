@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class Document{
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
     @Column(name = "document_number")
@@ -35,12 +35,11 @@ public class Document{
     private int sum;
     @Column(name = "note", columnDefinition = "text")
     private String note;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "document")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "document")
     private List<Position> positions = new ArrayList<>();
-    private Long previewPositionId;
 
     public void AddPosition(Position position){
-        positions.add(position);
+        this.positions.add(position);
         this.UpdateDocumentSum();
     }
 
