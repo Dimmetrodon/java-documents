@@ -1,5 +1,7 @@
 package com.example.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,6 +33,7 @@ public class Position{
     @Column(name = "sum")
     private int sum;
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @JsonIgnore
     @JoinColumn(name = "document_id", referencedColumnName = "id")
     private Document document;
 }

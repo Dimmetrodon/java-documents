@@ -3,6 +3,7 @@ package com.example.demo.controllers;
 import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,12 +23,12 @@ public class PositionsController {
         return positionService.createPosition(document_id, position);
     }
 
-    @PostMapping("document/{document_id}/updateposition/{position_id}")
+    @PostMapping("/updateposition/{position_id}")
     public ResponseEntity<?> updatePosition(@PathVariable Long position_id, @RequestBody Position position){
         return positionService.updatePosition(position_id, position);
     }
 
-    @PostMapping("document/{document_id}/deleteposition/{position_id}")
+    @DeleteMapping("/deleteposition/{position_id}")
     public ResponseEntity<?> deletePosition(@PathVariable Long position_id){
         return positionService.deletePosition(position_id);
     }

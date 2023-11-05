@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,7 +40,7 @@ public class DocumentsController{
         return documentService.saveDocument(document);
     }
 
-    @PostMapping("/document/delete/{id}")
+    @DeleteMapping("/document/delete/{id}")
     public ResponseEntity<?> deleteDocument(@PathVariable Long id){
         documentService.deleteDocument(id);
         return ResponseEntity.ok("Successful deletion");
@@ -48,5 +49,10 @@ public class DocumentsController{
     @PostMapping("/document/update/{id}")
     public ResponseEntity<?> updateDocument(@PathVariable long id, @RequestBody Document document){
         return documentService.updateDocument(id, document);
+    }
+
+    @GetMapping("/document/getpositions/{document_id}")
+    public ResponseEntity<?> getPositions(@PathVariable long document_id){
+        return documentService.getPositions(document_id);
     }
 }

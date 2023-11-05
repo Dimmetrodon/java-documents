@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.models.Document;
 import com.example.demo.models.DocumentCreationError;
-
+import com.example.demo.models.Position;
 import com.example.demo.repositories.DocumentRepository;
 import com.example.demo.repositories.ErrorRepository;
 
@@ -85,5 +85,9 @@ public class DocumentService {
         document_error.setName("Ошибка при создании документа");
         document_error.setNote("Повторяющийся номер документа: " + document_number);
         errorRepository.save(document_error);
+    }
+
+    public ResponseEntity<List<Position>> getPositions(Long document_id){
+        return ResponseEntity.ok(documentRepository.findById(document_id).get().getPositions());
     }
 }

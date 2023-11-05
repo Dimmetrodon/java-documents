@@ -2,6 +2,9 @@ package com.example.demo.models;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 
 import jakarta.persistence.CascadeType;
@@ -35,6 +38,7 @@ public class Document{
     private int sum;
     @Column(name = "note", columnDefinition = "text")
     private String note;
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "document")
     private List<Position> positions = new ArrayList<>();
 
