@@ -21,13 +21,15 @@
     git clone https://github.com/Dimmetrodon/java-documents.git
     git clone https://github.com/Dimmetrodon/documents-front.git
     ```
-2. Перейдите в директорию проекта:
+2. Создайте базу данных PostgreSQL.
+3. Заполните файл java\demo\src\main\resources\application.properties вашими значениями.
+4. Перейдите в директорию проекта:
     ```bash
     cd java-documents
     mvn clean package
     java -jar ./target/"your .jar file"
     ```
-3. В другом терминале
+5. В другом терминале
     ```bash
     cd documents-front
     npm i -g @angular/cli
