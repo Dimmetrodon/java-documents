@@ -26,7 +26,7 @@ public class DocumentsController{
 
     @GetMapping("/")
     public ResponseEntity<?> documents(@RequestParam(name = "document_number", required = false) String document_number) {
-        return ResponseEntity.ok(documentService.GetDocuments(document_number));
+        return ResponseEntity.ok(documentService.getDocuments(document_number));
     }
 
     @GetMapping("/document/{id}")

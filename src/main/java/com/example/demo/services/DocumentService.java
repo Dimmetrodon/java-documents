@@ -24,7 +24,7 @@ public class DocumentService {
     private final DocumentRepository documentRepository;
     private final ErrorRepository errorRepository;
 
-    public List<Document> GetDocuments(String document_number){
+    public List<Document> getDocuments(String document_number){
         log.info("Listing documents");
         if (document_number != null && !document_number.equals(""))  return documentRepository.findBydocument_number(document_number);
         return documentRepository.findAll();
@@ -34,7 +34,7 @@ public class DocumentService {
         String document_number = document.getDocument_number();
         if (!documentRepository.findBydocument_number(document_number).isEmpty()){
             log.info("Document creation error occured");
-            DocumentCreationError(document_number);
+            documentCreationError(document_number);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Document with the same number already exists.");
         }else{
             log.info("Saving new document: {}", document);
@@ -80,7 +80,7 @@ public class DocumentService {
         }
     }
 
-    public void DocumentCreationError(String document_number){
+    public void documentCreationError(String document_number){
         DocumentCreationError document_error = new DocumentCreationError();
         document_error.setName("Ошибка при создании документа");
         document_error.setNote("Повторяющийся номер документа: " + document_number);
